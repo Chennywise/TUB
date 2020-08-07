@@ -66,7 +66,460 @@
                 root.manager.transition.direction = "left"
                 root.login()
 
+        Button:<CreateAccountWindow>:
+    name: "create"
+
+    namee: namee
+    email: email
+    password: passw
+
+    FloatLayout:
+        size_hint: 1, 1
+        cols:1
+        canvas:
+            Color:
+                rgba: 0, 0.7, 0.93, 1
+                
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        FloatLayout:
+            size: root.width, root.height/2
+
+            Label:
+                text: "Create an Account"
+                size_hint: 0.8, 0.2
+                pos_hint: {"x":0.1, "top":1}
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8}
+                text: "Name: "
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8}
+                size_hint: 0.4, 0.12
+                id: namee
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8-0.13}
+                text: "Email: "
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8-0.13}
+                size_hint: 0.4, 0.12
+                id: email
+                multiline: False
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            Label:
+                size_hint: 0.5,0.12
+                pos_hint: {"x":0, "top":0.8-0.13*2}
+                text: "Password: "
+                font_size: (root.width**2 + root.height**2) / 14**4
+
+            TextInput:
+                pos_hint: {"x":0.5, "top":0.8-0.13*2}
+                size_hint: 0.4, 0.12
+                id: passw
+                multiline: False
+                password: True
+                font_size: (root.width**2 + root.height**2) / 14**4
+
         Button:
+            pos_hint:{"x":0.3,"y":0.25}
+            size_hint: 0.4, 0.1
+            font_size: (root.width**2 + root.height**2) / 17**4
+            text: "Already have an Account? Log In"
+            background_normal: ""
+            background_color: (0, 0.79, 0.34, 1)
+            on_release:
+                root.manager.transition.direction = "left"
+                root.login()
+
+        Button:
+            pos_hint:{"x":0.2,"y":0.05}
+            size_hint: 0.6, 0.15
+            text: "Submit"
+            font_size: (root.width**2 + root.height**2) / 14**4
+            background_normal: ""
+            background_color: (0, 0.79, 0.34, 1)
+            on_release:
+                root.manager.transition.direction = "left"
+                root.submit()
+
+
+<LoginWindow>:
+    name: "login"
+
+    email: email
+    password: password
+
+    FloatLayout:
+        size_hint: 1, 1
+        canvas:
+            Color:
+                rgba: 1, 1, 1, 1
+
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text:"Email: "
+            font_size: (root.width**2 + root.height**2) / 13**4
+            pos_hint: {"x":0.1, "top":0.9}
+            size_hint: 0.35, 0.15
+            color: 1, 0, 0, 1
+
+        TextInput:
+            id: email
+            font_size: (root.width**2 + root.height**2) / 13**4
+            multiline: False
+            pos_hint: {"x": 0.45 , "top":0.9}
+            size_hint: 0.4, 0.15
+
+        Label:
+            text:"Password: "
+            font_size: (root.width**2 + root.height**2) / 13**4
+            pos_hint: {"x":0.1, "top":0.7}
+            size_hint: 0.35, 0.15
+            color: 1, 0, 0, 1
+        
+
+        TextInput:
+            id: password
+            font_size: (root.width**2 + root.height**2) / 13**4
+            multiline: False
+            password: True
+            pos_hint: {"x": 0.45, "top":0.7}
+            size_hint: 0.4, 0.15
+
+        Button:
+            pos_hint:{"x":0.2,"y":0.05}
+            size_hint: 0.6, 0.2
+            font_size: (root.width**2 + root.height**2) / 13**4
+            text: "Login"
+            background_normal: ""
+            background_color: (0.0, 0.5, 1, 1.0)
+                
+            on_release:
+                root.manager.transition.direction = "up"
+                root.loginBtn()
+
+        Button:
+            pos_hint:{"x":0.3,"y":0.3}
+            size_hint: 0.4, 0.1
+            font_size: (root.width**2 + root.height**2) / 17.5**4
+            text: "Don't have an Account? Create One"
+            background_normal: ""
+            background_color: (0.0, 0.5, 1.0, 1.0)
+                
+            on_release:
+                root.manager.transition.direction = "right"
+                root.createBtn()
+
+
+<MainWindow>:
+    n: n
+    
+
+    FloatLayout:
+        Label:
+            id: n
+            pos_hint:{"x": 0.1, "top":1}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Account Name: "
+
+        Button:
+            pos_hint:{"x": 0.25, "top":0.8}
+            size_hint:0.5, 0.15
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Profile"
+            background_normal: ""
+            background_color: (0.8, 0.07, 0, 1)
+            on_release:
+                root.manager.transition.direction = "left"
+                root.profilebtn()
+
+        Button:
+            pos_hint:{"x": 0.25, "top":0.6}
+            size_hint:0.5, 0.15
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Your Clubs"
+            background_normal: ""
+            background_color: (0.8, 0.4, 0, 1)
+
+        Button:
+            pos_hint: {"x": 0.25, "top":0.4}
+            size_hint: 0.5, 0.15
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Available Clubs"
+            background_normal: ""
+            background_color: (0.8, 0.68, 0, 1)
+            on_release:
+                root.manager.transition.direction = "left"
+                root.schoolbtn()
+
+        Button:
+            pos_hint:{"x":0.25, "y": 0.05}
+            size_hint:0.5,0.15
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Log Out"
+            background_normal: ""
+            background_color: (0.8, 0.71, 0.8, 1)
+            
+            on_release:
+                root.manager.transition.direction = "down"
+                app.root.current = "login"
+                
+<SearchSchool>:
+    n: n
+    schools: schools
+
+    FloatLayout:
+        size_hint: 1, 1
+        canvas:
+            Color:
+                rgba: (0.67, 0.87, 0.0, 1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            id: n
+            pos_hint:{"x": 0.1, "top":1}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Account Name: "
+            color: 1, 0, 0, 1
+
+        Label:
+            pos_hint: {"x": 0.1, "top": 0.8}
+            size_hint: 0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Enter your school name:"
+            color: 1, 0, 0, 1
+
+        TextInput:
+            id: schools
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            pos_hint: {"x": 0.2, "top":0.55}
+            size_hint: 0.6, 0.10
+
+        Button:
+            pos_hint: {"x": 0.35, "top": 0.4}
+            size_hint: 0.3, 0.15
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Search"
+            background_normal: ""
+            background_color: (0.64, 0.83, 0.93, 1)
+            on_release:
+                root.manager.transition.direction = "left"
+                root.search()
+
+<AvailableClubs>:
+    FloatLayout:
+        size_hint: 1, 1
+        pos_hint: {"x": 0, "top": 1}
+        canvas:
+            Color:
+                rgba: 0.63, 0.47, 0.93, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+            
+            
+            Color:
+                rgba: 0.56, 1, 0.98, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size[0], self.size[1]*0.8
+
+        
+        Label:
+            pos_hint:{"x": 0.1, "top":1}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Clubs:"
+            
+<ProfilePage>:
+    nameee: nameee
+    createe: createe
+    bio: bio
+
+    FloatLayout:
+        size_hint: 1, 1
+        canvas:
+            Color:
+                rgba: 0.87, 1, 0.65, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                
+        Label:
+            id: nameee
+            pos_hint:{"x": 0.1, "top":1}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Account Name: "
+            color: 0, 0, 1, 1
+
+        Label:
+            id: createe
+            pos_hint:{"x": 0.1, "top":0.85}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Account Created: "
+            color: 0, 0, 1, 1
+
+        Label:
+            pos_hint: {"x": 0.1, "top":0.7}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Bio:"
+            color: 0, 0, 1, 1
+
+        TextInput:
+            id: bio
+            font_size: (root.width**2 + root.height**2) / 16**4
+            multiline: True
+            pos_hint: {"x": 0.1 , "top":0.55}
+            size_hint: 0.8, 0.3
+            
+        Button:
+            pos_hint: {"x": 0.78, "top": 0.25}
+            size_hint: 0.12, 0.08
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Submit"
+            background_normal: ""
+            background_color: (0.97, 0.08, 0.0, 1)
+            on_release:
+                root.Save()
+
+        Button:
+            pos_hint: {"right": 1, "bottom": 1}
+            size_hint: 0.17, 0.08
+            font_size: (root.width**2 + root.height**2) / 16**4
+            text: "Change Password"
+            background_normal: ""
+            background_color: (0.1, 0.1, 0.1, 1)
+            
+            on_release:
+                root.manager.transition.direction = "left"
+                root.ChangePass()
+                
+        Button:
+            pos: 0, 0
+            size_hint: 0.12, 0.08
+            font_size: (root.width**2 + root.height**2) / 16**4
+            text: "Back"
+            background_normal: ""
+            background_color: (0.98, 0.6, 0.31, 1)
+            on_release:
+                root.manager.transition.direction = "right"
+                root.Back()
+
+<ChangePassword>:
+    nameee: nameee
+    oldpass: oldpass
+    newpass: newpass
+    confirmpass: confirmpass
+    
+    FloatLayout:
+        size_hint: 1, 1
+        canvas:
+            Color:
+                rgba: 0.9, 0.91, 0.98, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+        Label:
+            id: nameee
+            pos_hint:{"x": 0.1, "top":1}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Account Name: "
+            color: 1, 0, 0, 1
+
+        Label:
+            text:"Old Passoword: "
+            font_size: (root.width**2 + root.height**2) / 14**4
+            pos_hint: {"x":0.1, "top":0.8}
+            size_hint: 0.35, 0.15
+            color: 1, 0, 0, 1
+
+        TextInput:
+            id: oldpass
+            password: True
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            pos_hint: {"x": 0.45 , "top":0.8}
+            size_hint: 0.4, 0.15
+
+        Label:
+            text: "New Password: "
+            font_size: (root.width**2 + root.height**2) / 14**4
+            pos_hint: {"x":0.1, "top":0.6}
+            size_hint: 0.35, 0.15
+            color: 1, 0, 0, 1
+        
+
+        TextInput:
+            id: newpass
+            password: True
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            pos_hint: {"x": 0.45, "top":0.6}
+            size_hint: 0.4, 0.15
+
+        Label:
+            text: "Confirm New Password: "
+            font_size: (root.width**2 + root.height**2) / 15.5**4
+            pos_hint: {"x":0.1, "top":0.4}
+            size_hint: 0.35, 0.15
+            color: 1, 0, 0, 1
+            
+        TextInput:
+            id: confirmpass
+            password: True
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            pos_hint: {"x": 0.45, "top":0.4}
+            size_hint: 0.4, 0.15
+
+        Button:
+            text: "Submit"
+            pos_hint: {"x": 0.45, "top": 0.2}
+            size_hint: 0.4, 0.1
+            font_size: (root.width**2 + root.height**2) / 14**4
+            background_normal: ""
+            background_color: (0.05, 0.05, 0.05, 1)
+            on_release:
+                root.Save()
+            
+        Button:
+            pos: 0, 0
+            size_hint: 0.12, 0.08
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Cancel"
+            background_normal: ""
+            background_color: (0.98, 0.86, 0.05, 1)
+            on_release:
+                root.manager.transition.direction = "right"
+                root.Back()
+
             pos_hint:{"x":0.2,"y":0.05}
             size_hint: 0.6, 0.15
             text: "Submit"
