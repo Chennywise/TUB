@@ -37,9 +37,15 @@ class DataBase:
             self.mydb.commit()
             return 1
 
+
         else:
             print("Email exists already")
             return -1
+    def add_club(self, name, school, description, status):
+        command = "INSERT INTO club_list (club_name, club_school, descr, stat, creation_date) VALUES(%s, %s, %s, %s, %s)"
+        val = (name.strip(), school.strip().lower(), descr.strip(), status, DataBase.get_date())
+        self.mycursor.execute(command, val)
+        self.mydb.commit()
 
     def validate(self, email, password):
         if self.get_user(email) != -1:
@@ -49,7 +55,7 @@ class DataBase:
             return False
     def setUser(self, email):
         command = "SELECT user_id FROM users WHERE email = \'" + email + "\'"
-        print(command)
+        #print(command)
         self.mycursor.execute(command)
         self.user_id = self.mycursor.fetchone()[0]
     def saveBio(self, bio):
@@ -68,9 +74,11 @@ class DataBase:
         command = "UPDATE users SET password = \'"+newPassword+"\' WHERE user_id = "+str(self.user_id)
         self.mycursor.execute(command)
         self.mydb.commit()
+    def searchClubs(self, school, keyword):
+        command = "SELECT club_name, club_school FROM club_list WHERE club_school LIKE \'%"+school+"%\' AND club_name LIKE \'%"+keyword+"%\'"
+        self.mycursor.execute(command)
+        return self.mycursor.fetchall()
 
     @staticmethod
     def get_date():
         return str(datetime.datetime.now()).split(" ")[0]
-
-
