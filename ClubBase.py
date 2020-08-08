@@ -5,6 +5,12 @@ from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from database import DataBase
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.button import Button
+from kivy.base import runTouchApp
+from kivy.lang import Builder
+from kivy.clock import Clock
 
 
 class CreateAccountWindow(Screen):
@@ -144,7 +150,7 @@ class ChangePassword(Screen):
         self.newpass.text = ""
         self.confirmpass.text = ""
 
-class SearchSchool(Screen):
+class SearchSchool(Screen): #tf does this do rn???
     n = ObjectProperty(None)
     schools = ObjectProperty(None)
     current = ""
@@ -167,14 +173,13 @@ class SearchSchool(Screen):
 
 class ClubList(Screen):
     clubsearch = ObjectProperty(None)
+    schoolsearch = ObjectProperty(None)
+    clubs = []
     current = ""
 
-    def getClubs(self, *args):
-        myClubs = []
-        for club in range(len(clubMembers)):
-            if self in clubMembers[club][1]: #List of clubs, [0] is name, [1] is members list
-                myClubs.append(club)
-        return myClubs
+    def searchit(self):
+        clubs = db.searchClubs(self.schoolsearch.text, self.clubsearch.text)
+        print (clubs)
 
     def reset(self):
         self.clubsearch.text = ""
@@ -186,7 +191,33 @@ class ClubList(Screen):
 
 class AllClubs(Screen):
     clubsearch = ObjectProperty(None)
+    schoolsearch = ObjectProperty(None)
+    clubs = []
     current = ""
+    grid = ObjectProperty(None)
+    container = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
+        self.btn = []
+        super(AllClubs, self).__init__(**kwargs)
+        Clock.schedule_once(self.setup_scroll, 1)
+        
+        self.clubs = db.searchClubs(self.schoolsearch.text, self.clubsearch.text)
+    
+    def setup_scroll(self, dt):
+
+        self.container.bind(minimum_height = self.container.setter('height'))
+        for i in range(len(self.clubs)):
+            self.btn.append("")
+            self.btn[i] = Button(text = str(self.clubs[i][0]) + " : " + str(self.clubs[i][1]) + " : " + str(self.clubs[i][2]), size_hint_y = None, height = 60)
+            self.btn[i].bind(on_release = self.pressed)
+            self.container.add_widget(self.btn[i])
+
+    def searchit(self):
+        self.clubs = db.searchClubs(self.schoolsearch.text, self.clubsearch.text)
+        
+        self.container.clear_widgets()
+        self.setup_scroll(1)
 
     def reset(self):
         self.clubsearch.text = ""
@@ -196,7 +227,59 @@ class AllClubs(Screen):
         MainWindow.current = self.current
         sm.current = "main"
 
+    def Add(self):
+        self.reset()
+        AddClub.current = self.current
+        sm.current = "Addclub"
 
+    def pressed(self, instance):
+        print(int(instance.text.split(" : ")[2])) #BRANDON OVERRRR HERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR, INSTANCE.TEXT IS THE NAME OF THE BUTTON
+        print('The button <%s> is being pressed' % instance.text)
+
+class AddClub(Screen):
+    n = ObjectProperty(None)
+    schools = ObjectProperty(None)
+    description = ObjectProperty(None)
+    opened = ObjectProperty(None)
+    apply = ObjectProperty(None)
+    current = ""
+
+    def on_enter(self):
+        self.status = ""
+
+    def Back(self):
+        self.reset()
+        AllClubs.current = self.current
+        sm.current = "allclubs"
+
+    def Open(self):
+        self.opened.background_color = (0, 1, 0, 1)
+        self.apply.background_color = (1, 0, 0, 1)
+        self.status = "open"
+
+    def Apply(self):
+        self.opened.background_color = (1, 0, 0, 1)
+        self.apply.background_color = (0, 1, 0, 1)
+        self.status = "apply"
+
+    def Submit(self):
+        if self.Validate():
+            db.add_club(self.n.text, self.schools.text, self.description.text, self.status)
+            self.reset()
+
+    def Validate(self):
+        if self.n.text != "" and self.schools.text != "" and self.description.text != "" and self.status != "":
+            return True
+        else:
+            invalidForm()
+
+    def reset(self):
+        self.n.text = ""
+        self.schools.text = ""
+        self.description.text = ""
+        self.status = ""
+        self.opened.background_color = (1, 0, 0, 1)
+        self.apply.background_color = (1, 0, 0, 1)
 
 class WindowManager(ScreenManager):
     pass
@@ -222,7 +305,10 @@ kv = Builder.load_file("my.kv")
 sm = WindowManager()
 db = DataBase("users.txt")
 
-screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),MainWindow(name="main"), ProfilePage(name = "pro"), ChangePassword(name = "changepass"), ClubList(name = "clublist"), AllClubs(name = "allclubs")]
+screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),
+           MainWindow(name="main"), ProfilePage(name = "pro"),
+           ChangePassword(name = "changepass"), ClubList(name = "clublist"),
+           AllClubs(name = "allclubs"), AddClub(name = "Addclub")]
 for screen in screens:
     sm.add_widget(screen)
 
@@ -236,3 +322,4 @@ class MyMainApp(App):
 
 if __name__ == "__main__":
     MyMainApp().run()
+
