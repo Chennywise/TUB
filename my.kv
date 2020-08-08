@@ -164,6 +164,15 @@
     
 
     FloatLayout:
+        sinze_hint: 1, 1
+        canvas:
+            Color:
+                rgba: 0.4, 0.78, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        rgba: 1, 1, 1, 1
         Label:
             id: n
             pos_hint:{"x": 0.1, "top":1}
@@ -189,6 +198,9 @@
             text: "Your Clubs"
             background_normal: ""
             background_color: (0.8, 0.4, 0, 1)
+			on_release:
+			    root.manager.transition.direction = "left"
+				root.clubsbtn()
 
         Button:
             pos_hint: {"x": 0.25, "top":0.4}
@@ -197,9 +209,9 @@
             text: "Available Clubs"
             background_normal: ""
             background_color: (0.8, 0.68, 0, 1)
-            on_release:
-                root.manager.transition.direction = "left"
-                root.schoolbtn()
+			on_release:
+			    root.manager.transition.direction = "left"
+				root.allclubsbtn()
 
         Button:
             pos_hint:{"x":0.25, "y": 0.05}
@@ -208,7 +220,6 @@
             text: "Log Out"
             background_normal: ""
             background_color: (0.8, 0.71, 0.8, 1)
-            
             on_release:
                 root.manager.transition.direction = "down"
                 app.root.current = "login"
@@ -259,32 +270,6 @@
                 root.manager.transition.direction = "left"
                 root.search()
 
-<AvailableClubs>:
-    FloatLayout:
-        size_hint: 1, 1
-        pos_hint: {"x": 0, "top": 1}
-        canvas:
-            Color:
-                rgba: 0.63, 0.47, 0.93, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-
-            
-            
-            Color:
-                rgba: 0.56, 1, 0.98, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size[0], self.size[1]*0.8
-
-        
-        Label:
-            pos_hint:{"x": 0.1, "top":1}
-            size_hint:0.8, 0.2
-            font_size: (root.width**2 + root.height**2) / 14**4
-            text: "Clubs:"
-            
 <ProfilePage>:
     nameee: nameee
     createe: createe
@@ -448,6 +433,63 @@
             text: "Cancel"
             background_normal: ""
             background_color: (0.98, 0.86, 0.05, 1)
+            on_release:
+                root.manager.transition.direction = "right"
+                root.Back()
+
+
+<ClubList>:
+    clubsearch: clubsearch
+	
+	FloatLayout:
+	
+	    Label:
+		    text: "Search: "
+            font_size: (root.width**2 + root.height**2) / 15.5**4
+            pos_hint: {"x":0.1, "top":1}
+            size_hint: 0.35, 0.15
+            color: 1, 0, 0, 1
+		
+		TextInput:
+            id: clubsearch
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            pos_hint: {"x": 0.45, "top":1}
+            size_hint: 0.4, 0.15
+	
+	    Button:
+		    pos:0,0
+			size_hint: 0.12, 0.08
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Back"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.Back()
+
+<AllClubs>:
+    clubsearch: clubsearch
+	
+	FloatLayout:
+	
+	    Label:
+		    text: "Search: "
+            font_size: (root.width**2 + root.height**2) / 15.5**4
+            pos_hint: {"x":0.1, "top":1}
+            size_hint: 0.35, 0.15
+            color: 1, 0, 0, 1
+		
+		TextInput:
+            id: clubsearch
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            pos_hint: {"x": 0.45, "top":1}
+            size_hint: 0.4, 0.15
+	
+	    Button:
+		    pos:0,0
+			size_hint: 0.12, 0.08
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Back"
             on_release:
                 root.manager.transition.direction = "right"
                 root.Back()
