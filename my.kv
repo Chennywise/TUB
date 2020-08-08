@@ -1,3 +1,4 @@
+#:import Button kivy.uix.button.Button
 <CreateAccountWindow>:
     name: "create"
 
@@ -437,59 +438,275 @@
                 root.manager.transition.direction = "right"
                 root.Back()
 
-
 <ClubList>:
     clubsearch: clubsearch
-	
-	FloatLayout:
-	
-	    Label:
-		    text: "Search: "
+    schoolsearch: schoolsearch
+
+    FloatLayout:
+        size_hint: 1, 1
+        canvas:
+            Color:
+                rgba: 0.87, 1, 0.65, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                
+        ScrollView:
+            pos_hint: {"x":0.125, "top":0.8}
+            size_hint: 0.75, 0.7
+            canvas:
+                Color:
+                    rgba: 0.9, 0.91, 0.98, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            do_scroll_x: False
+            do_scroll_y: True
+            
+            bar_width: 10
+            bar_color: 1, 0, 0, 1   # red
+            bar_inactive_color: 0, 0, 1, 1   # blue
+            effect_cls: "ScrollEffect"
+            scroll_type: ['bars']
+            
+            GridLayout:
+                cols: 1
+                padding: 10
+                spacing: 15
+                size_hint_y: None
+                size_hint_x: None
+                width: dp(100)
+                height: self.minimum_height
+
+                Label:
+                    text: "Main Label"
+                    font_size: (root.width**2 + root.height**2) / 15.5**4
+                    pos_hint: {"x":0.1, "top":0.4}
+                    size_hint: 0.35, 0.15
+                    color: 1, 0, 0, 1
+        Label:
+            text: "Name Search: "
             font_size: (root.width**2 + root.height**2) / 15.5**4
-            pos_hint: {"x":0.1, "top":1}
-            size_hint: 0.35, 0.15
+            pos_hint: {"left":1, "top":0.98}
+            size_hint: 0.2, 0.08
             color: 1, 0, 0, 1
-		
-		TextInput:
+
+        TextInput:
             id: clubsearch
-            font_size: (root.width**2 + root.height**2) / 14**4
+            font_size: (root.width**2 + root.height**2) / 15.5**4
             multiline: False
-            pos_hint: {"x": 0.45, "top":1}
-            size_hint: 0.4, 0.15
-	
-	    Button:
-		    pos:0,0
-			size_hint: 0.12, 0.08
+            pos_hint: {"x": 0.2, "top":0.98}
+            size_hint: 0.6, 0.08
+            
+        Label:
+            text: "School Search: "
+            font_size: (root.width**2 + root.height**2) / 15.5**4
+            pos_hint: {"left":1, "top":0.9}
+            size_hint: 0.2, 0.08
+            color: 1, 0, 0, 1
+
+        TextInput:
+            id: schoolsearch
+            font_size: (root.width**2 + root.height**2) / 15.5**4
+            multiline: False
+            pos_hint: {"x": 0.2, "top":0.9}
+            size_hint: 0.6, 0.08
+        
+        Button:
+            pos_hint: {"right":0.95, "top":0.94}
+            size_hint: 0.12, 0.08
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Search"
+            on_release:
+                root.searchit()
+
+        Button:
+            pos:0,0
+            size_hint: 0.12, 0.08
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Back"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.Back()
+<AllClubs>:
+    clubsearch: clubsearch
+    schoolsearch: schoolsearch
+    container: container
+
+    FloatLayout:
+        size_hint: 1, 1
+        canvas:
+            Color:
+                rgba: 0.87, 1, 0.65, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size          
+            
+        FloatLayout:
+                
+            pos_hint: {"x":0.10, "top":0.8}
+            size_hint: 0.8, 0.70
+            canvas:
+                Color:
+                    rgba: 0.0, 0.91, 0.98, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+        GridLayout:
+            cols: 1
+            spacing: 10
+            size_hint:0.8, 0.70
+            pos_hint: {"x":0.10, "top":0.8}
+
+            ScrollView:
+                size: self.size
+                pos:self.pos
+
+                StackLayout:
+                    id: container
+                    size_hint_y: None         
+                               
+        Label:
+            text: "Name Search: "
+            font_size: (root.width**2 + root.height**2) / 15.5**4
+            pos_hint: {"left":1, "top":0.98}
+            size_hint: 0.2, 0.08
+            color: 1, 0, 0, 1
+
+        TextInput:
+            id: clubsearch
+            font_size: (root.width**2 + root.height**2) / 15.5**4
+            multiline: False
+            pos_hint: {"x": 0.2, "top":0.98}
+            size_hint: 0.6, 0.08
+            
+        Label:
+            text: "School Search: "
+            font_size: (root.width**2 + root.height**2) / 15.5**4
+            pos_hint: {"left":1, "top":0.9}
+            size_hint: 0.2, 0.08
+            color: 1, 0, 0, 1
+
+        TextInput:
+            id: schoolsearch
+            font_size: (root.width**2 + root.height**2) / 15.5**4
+            multiline: False
+            pos_hint: {"x": 0.2, "top":0.9}
+            size_hint: 0.6, 0.08
+        
+        Button:
+            pos_hint: {"right":0.95, "top":0.94}
+            size_hint: 0.12, 0.08
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Search"
+            on_release:
+                root.searchit()
+
+        Button:
+            pos:0,0
+            size_hint: 0.12, 0.08
             font_size: (root.width**2 + root.height**2) / 15**4
             text: "Back"
             on_release:
                 root.manager.transition.direction = "right"
                 root.Back()
 
-<AllClubs>:
-    clubsearch: clubsearch
-	
-	FloatLayout:
-	
-	    Label:
-		    text: "Search: "
+        Button:
+            pos_hint: {"right": 1, "bottom": 0}
+            size_hint: 0.15, 0.08
             font_size: (root.width**2 + root.height**2) / 15.5**4
-            pos_hint: {"x":0.1, "top":1}
-            size_hint: 0.35, 0.15
+            text: "Add New Club"
+            on_release:
+                root.manager.transition.direction = "left"
+                root.Add()
+            
+<AddClub>:
+    n: n
+    schools: schools
+    description: description
+    opened:opened
+    apply: apply
+    
+    FloatLayout:
+        Label:
+            text:"Club Name: "
+            font_size: (root.width**2 + root.height**2) / 14**4
+            pos_hint: {"x":0.1, "top":0.9}
+            size_hint: 0.35, 0.1
             color: 1, 0, 0, 1
-		
-		TextInput:
-            id: clubsearch
+
+        TextInput:
+            id: n
             font_size: (root.width**2 + root.height**2) / 14**4
             multiline: False
-            pos_hint: {"x": 0.45, "top":1}
-            size_hint: 0.4, 0.15
-	
-	    Button:
-		    pos:0,0
-			size_hint: 0.12, 0.08
+            pos_hint: {"x": 0.45 , "top":0.9}
+            size_hint: 0.4, 0.1
+
+        Label:
+            text:"School Name: "
+            font_size: (root.width**2 + root.height**2) / 14**4
+            pos_hint: {"x":0.1, "top":0.75}
+            size_hint: 0.35, 0.10
+            color: 1, 0, 0, 1
+        
+
+        TextInput:
+            id: schools
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: False
+            pos_hint: {"x": 0.45, "top":0.75}
+            size_hint: 0.4, 0.1
+
+        Label:
+            text: "Description: "
+            font_size: (root.width**2 + root.height**2) / 14**4
+            pos_hint: {"x": 0.1, "top": 0.6}
+            size_hint: 0.8, 0.1
+            color: 1, 0, 0, 1
+
+        TextInput:
+            id: description
+            font_size: (root.width**2 + root.height**2) / 14**4
+            multiline: True
+            pos_hint: {"x": 0.2, "top": 0.5}
+            size_hint: 0.6, 0.3
+
+        Button:
+            pos:0,0
+            size_hint: 0.12, 0.08
             font_size: (root.width**2 + root.height**2) / 15**4
-            text: "Back"
+            text: "Cancel"
             on_release:
                 root.manager.transition.direction = "right"
                 root.Back()
+
+        Button:
+            id:opened
+            pos_hint: {"x": 0.3, "top": 0.18}
+            size_hint: 0.15, 0.09
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Open"
+            background_normal: ""
+            background_color: 0, 1, 0, 1
+            on_release:
+                root.Open()
+
+        Button:
+            id: apply
+            pos_hint: {"x": 0.55, "top": 0.18}
+            size_hint: 0.15, 0.09
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Apply"
+            background_normal: ""
+            background_color: 0, 1, 0, 1
+            on_release:
+                root.Apply()
+            
+        Button:
+            pos_hint: {"right": 1, "bottom": 1}
+            size_hint: 0.15, 0.08
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Submit"
+            on_release:
+                root.Submit()
