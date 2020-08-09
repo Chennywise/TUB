@@ -24,7 +24,7 @@ class DataBase:
         self.mycursor.execute(command)
         results = self.mycursor.fetchall()
         if len(results) != 0:
-            print(results[0])
+
             return results[0]
         else:
             return -1
@@ -39,7 +39,7 @@ class DataBase:
 
 
         else:
-            print("Email exists already")
+
             return -1
     def add_club(self, name, school, description, status):
         command = "INSERT INTO club_list (club_name, club_school, descr, stat, creation_date) VALUES(%s, %s, %s, %s, %s)"
@@ -47,7 +47,7 @@ class DataBase:
         self.mycursor.execute(command, val)
         self.mycursor.execute("SELECT LAST_INSERT_ID()")
         id = self.mycursor.fetchone()[0]
-        print(id)
+
         self.joinClub(id, admin = True)
         self.mydb.commit()
 
@@ -59,7 +59,7 @@ class DataBase:
             return False
     def setUser(self, email):
         command = "SELECT user_id FROM users WHERE email = \'" + email + "\'"
-        #print(command)
+
         self.mycursor.execute(command)
         self.user_id = self.mycursor.fetchone()[0]
     def saveBio(self, bio):
@@ -83,7 +83,7 @@ class DataBase:
         self.mycursor.execute(command)
         return self.mycursor.fetchall()
     def searchMyClubs(self, school, keyword):
-        command = "SELECT c.club_name, c.club_school, c.club_id FROM club_list c RIGHT JOIN club_members m ON c.club_id = m.club_id WHERE c.club_school LIKE \'%"+school+"%\' AND c.club_name LIKE \'%"+keyword+"%\' ORDER BY c.club_name"
+        command = "SELECT c.club_name, c.club_school, c.club_id FROM club_list c RIGHT JOIN club_members m ON c.club_id = m.club_id WHERE c.club_school LIKE \'%"+school+"%\' AND c.club_name LIKE \'%"+keyword+"%\' AND m.user_id = "+str(self.user_id)+" ORDER BY c.club_name"
         self.mycursor.execute(command)
         return self.mycursor.fetchall()
     def joinClub(self, club_id, admin = False):
@@ -91,9 +91,14 @@ class DataBase:
         val = (club_id, self.user_id, "member", 0, admin)
         self.mycursor.execute(command, val)
         self.mydb.commit()
+    def applyClub(self, club_id):
+        command = "INSERT INTO club_applications (club_id, user_id, application_date) VALUES(%s, %s, %s)"
+        val = (club_id, self.user_id, DataBase.get_date())
+        self.mycursor.execute(command, val)
+        self.mydb.commit()
 
     def getClubPage(self, club_id):
-        command = "SELECT club_name, club_school, descrn, creation_date, stat FROM club_list WHERE club_id = " + str(club_id)
+        command = "SELECT club_name, club_school, descr, creation_date, stat FROM club_list WHERE club_id = " + str(club_id)
         self.mycursor.execute(command)
         return self.mycursor.fetchone()
     def isInClub(self, club_id):
