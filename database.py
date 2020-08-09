@@ -83,7 +83,7 @@ class DataBase:
         self.mycursor.execute(command)
         return self.mycursor.fetchall()
     def searchMyClubs(self, school, keyword):
-        command = "SELECT c.club_name, c.club_school, c.club_id FROM club_list c RIGHT JOIN members m ON c.club_id = m.club_id WHERE c.club_school LIKE \'%"+school+"%\' AND c.club_name LIKE \'%"+keyword+"%\' ORDER BY c.club_name"
+        command = "SELECT c.club_name, c.club_school, c.club_id FROM club_list c RIGHT JOIN club_members m ON c.club_id = m.club_id WHERE c.club_school LIKE \'%"+school+"%\' AND c.club_name LIKE \'%"+keyword+"%\' ORDER BY c.club_name"
         self.mycursor.execute(command)
         return self.mycursor.fetchall()
     def joinClub(self, club_id, admin = False):
