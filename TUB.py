@@ -73,7 +73,7 @@ class MainWindow(Screen):
         sm.current = "login"
 
     def on_enter(self, *args):
-        #print(self.current)
+
         password, name, created = db.get_user(self.current)
         self.n.text = "Account Name: " + name.capitalize()
 
@@ -100,14 +100,14 @@ class ProfilePage(Screen):
         self.nameee.text = "Account Name: " + name.capitalize()
         self.createe.text = "Account Created: " + str(created)
         
-        #BRANDON OVER HERE!!!!!!!!!!!! WHEN SOMEONE ENTERS THE PROFILE AUTO DISPLAY THE LAST SAVED BIO
+
         self.bio.text = db.loadBio()
-        #END OF UR STARTING BIO DISPLAY
+
 
     def Save(self, *args):
         NewBio = self.bio.text
         db.saveBio(NewBio)
-        #BRANDON OVER HERE AS WELL!!!!!!!!!!!!!!!!!!!!! SAVE THIS SHIT IN THE FUCKING DATABASE
+
 
     def ChangePass(self):
         ChangePassword.current = self.current
@@ -150,7 +150,7 @@ class ChangePassword(Screen):
         self.newpass.text = ""
         self.confirmpass.text = ""
 
-class SearchSchool(Screen): #tf does this do rn???
+class SearchSchool(Screen):
     n = ObjectProperty(None)
     schools = ObjectProperty(None)
     current = ""
@@ -174,20 +174,46 @@ class SearchSchool(Screen): #tf does this do rn???
 class ClubList(Screen):
     clubsearch = ObjectProperty(None)
     schoolsearch = ObjectProperty(None)
-    clubs = []
     current = ""
+    container = ObjectProperty(None)
+
+    def __init__(self, **kwargs):
+        self.btn = []
+        
+        super(ClubList, self).__init__(**kwargs)
+        Clock.schedule_once(self.setup_scroll, 1)
+
+        self.clubs = db.searchMyClubs(self.schoolsearch.text, self.clubsearch.text)
+        self.searchit()
+
+    def on_enter(self):
+        self.clubs = db.searchMyClubs(self.schoolsearch.text, self.clubsearch.text)
+        self.searchit()
+
+    def setup_scroll(self, dt):
+        self.container.bind(minimum_height = self.container.setter('height'))
+        for i in range(len(self.clubs)):
+            self.btn.append("")
+            self.btn[i] = Button(text = str(self.clubs[i][0]) + " : " + str(self.clubs[i][1]) + " : " + str(self.clubs[i][2]), size_hint_y = None, height = 60)
+            self.btn[i].bind(on_release = self.pressed)
+            self.container.add_widget(self.btn[i])
 
     def searchit(self):
-        clubs = db.searchClubs(self.schoolsearch.text, self.clubsearch.text)
-        print (clubs)
+        self.clubs = db.searchMyClubs(self.schoolsearch.text, self.clubsearch.text)
+        self.container.clear_widgets()
+        self.setup_scroll(1)
 
     def reset(self):
         self.clubsearch.text = ""
+        self.schoolsearch.text = ""
 
     def Back(self):
         self.reset()
         MainWindow.current = self.current
         sm.current = "main"
+
+    def pressed(self, instance):
+        pass
 
 class AllClubs(Screen):
     clubsearch = ObjectProperty(None)
@@ -221,6 +247,7 @@ class AllClubs(Screen):
 
     def reset(self):
         self.clubsearch.text = ""
+        self.schoolsearch.text = ""
 
     def Back(self):
         self.reset()
@@ -233,8 +260,62 @@ class AllClubs(Screen):
         sm.current = "Addclub"
 
     def pressed(self, instance):
-        print(int(instance.text.split(" : ")[2])) #BRANDON OVERRRR HERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR, INSTANCE.TEXT IS THE NAME OF THE BUTTON
-        print('The button <%s> is being pressed' % instance.text)
+        global selectedClub
+        selectedClub = int(instance.text.split(" : ")[2])
+
+        ClubInfo.current = self.current
+        self.manager.transition.direction = "left"
+        sm.current = "clubinfo"
+
+class ClubInfo(Screen):
+    nameee = ObjectProperty(None)
+    createe = ObjectProperty(None)
+    descript = ObjectProperty(None)
+    schools = ObjectProperty(None)
+    join = ObjectProperty(None)
+    
+    def on_enter(self):
+        #FILL IN THE STUFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        global selectedClub
+        self.club_id = selectedClub
+        n, s, d, c, stat = db.getClubPage(self.club_id)
+        self.nameee.text = "Club Name: " + n
+        self.createe.text = "Club Created: " + str(c)
+        self.createe.text = "Club Created: " + str(c)
+        self.schools.text = "School: " + s
+        for i in range(len(d)):
+            if i % 51 == 0 and i != 0:
+                num = d.find(" ", i)
+
+                d = d[:num] + "\n" + d[num:]
+        self.descript.text = "Description: " + d
+        userStat = db.isInClub(self.club_id)
+        if userStat == "in" or userStat == "admin":
+            self.join.text = "JOINED"
+            self.join.background_normal = ""
+            self.join.background_color = (0, 0, 1, 1)
+        elif userStat == "pending":
+            self.join.text = "APPLIED"
+            self.join.background_normal = ""
+            self.join.background_color = (1, 0, 0, 1)
+        elif userStat == "not in" and stat.lower() == "apply":
+            self.join.text = "APPLY"
+            self.join.background_normal = ""
+            self.join.background_color = (0, 1, 0, 1)
+        else:
+            self.join.text = "JOIN"
+            self.join.background_normal = ""
+            self.join.background_color = (0, 1, 0, 1)
+
+    def Back(self):
+        sm.current = "allclubs"
+
+    def JoinClub(self):
+        if self.join.text == "JOIN":
+            db.joinClub(self.club_id)
+        elif self.join.text == "APPLY":
+            db.applyClub(self.club_id)
+    
 
 class AddClub(Screen):
     n = ObjectProperty(None)
@@ -308,7 +389,7 @@ db = DataBase("users.txt")
 screens = [LoginWindow(name="login"), CreateAccountWindow(name="create"),
            MainWindow(name="main"), ProfilePage(name = "pro"),
            ChangePassword(name = "changepass"), ClubList(name = "clublist"),
-           AllClubs(name = "allclubs"), AddClub(name = "Addclub")]
+           AllClubs(name = "allclubs"), AddClub(name = "Addclub"), ClubInfo(name = "clubinfo")]
 for screen in screens:
     sm.add_widget(screen)
 
@@ -322,4 +403,3 @@ class MyMainApp(App):
 
 if __name__ == "__main__":
     MyMainApp().run()
-
