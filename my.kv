@@ -372,7 +372,7 @@
             color: 1, 0, 0, 1
 
         Label:
-            text:"Old Passoword: "
+            text:"Old Password: "
             font_size: (root.width**2 + root.height**2) / 14**4
             pos_hint: {"x":0.1, "top":0.8}
             size_hint: 0.35, 0.15
@@ -441,6 +441,7 @@
 <ClubList>:
     clubsearch: clubsearch
     schoolsearch: schoolsearch
+    container: container
 
     FloatLayout:
         size_hint: 1, 1
@@ -450,41 +451,32 @@
             Rectangle:
                 pos: self.pos
                 size: self.size
+
+        FloatLayout:
                 
-        ScrollView:
-            pos_hint: {"x":0.125, "top":0.8}
-            size_hint: 0.75, 0.7
+            pos_hint: {"x":0.10, "top":0.8}
+            size_hint: 0.8, 0.70
             canvas:
                 Color:
-                    rgba: 0.9, 0.91, 0.98, 1
+                    rgba: 0.0, 0.91, 0.98, 1
                 Rectangle:
                     pos: self.pos
-                    size: self.size
+                    size: self.size   
 
-            do_scroll_x: False
-            do_scroll_y: True
-            
-            bar_width: 10
-            bar_color: 1, 0, 0, 1   # red
-            bar_inactive_color: 0, 0, 1, 1   # blue
-            effect_cls: "ScrollEffect"
-            scroll_type: ['bars']
-            
-            GridLayout:
-                cols: 1
-                padding: 10
-                spacing: 15
-                size_hint_y: None
-                size_hint_x: None
-                width: dp(100)
-                height: self.minimum_height
+        GridLayout:
+            cols: 1
+            spacing: 10
+            size_hint:0.8, 0.70
+            pos_hint: {"x":0.10, "top":0.8}
 
-                Label:
-                    text: "Main Label"
-                    font_size: (root.width**2 + root.height**2) / 15.5**4
-                    pos_hint: {"x":0.1, "top":0.4}
-                    size_hint: 0.35, 0.15
-                    color: 1, 0, 0, 1
+            ScrollView:
+                size: self.size
+                pos:self.pos
+
+                StackLayout:
+                    id: container
+                    size_hint_y: None
+                    
         Label:
             text: "Name Search: "
             font_size: (root.width**2 + root.height**2) / 15.5**4
@@ -498,6 +490,7 @@
             multiline: False
             pos_hint: {"x": 0.2, "top":0.98}
             size_hint: 0.6, 0.08
+            text: ""
             
         Label:
             text: "School Search: "
@@ -512,6 +505,7 @@
             multiline: False
             pos_hint: {"x": 0.2, "top":0.9}
             size_hint: 0.6, 0.08
+            text: ""
         
         Button:
             pos_hint: {"right":0.95, "top":0.94}
@@ -620,6 +614,72 @@
             on_release:
                 root.manager.transition.direction = "left"
                 root.Add()
+
+<ClubInfo>:
+    nameee: nameee
+    createe: createe
+    descript: descript
+    schools: schools
+    join: join
+    
+    FloatLayout:
+        size_hint: 1, 1
+        canvas:
+            Color:
+                rgba: 0.25, 0.5, 0.8, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                
+        Label:
+            id: nameee
+            pos_hint:{"x": 0.1, "top":0.95}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Club Name: "
+            color: 0, 0, 1, 1
+        Label:
+            id: schools
+            pos_hint:{"x": 0.1, "top":0.80}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "School: "
+            color: 0, 0, 1, 1
+            
+        Label:
+            id: createe
+            pos_hint:{"x": 0.1, "top":0.65}
+            size_hint:0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Club Created: "
+            color: 0, 0, 1, 1
+
+        Label:
+            id: descript
+            pos_hint: {"x": 0.1, "top": 0.35}
+            size_hint: 0.8, 0.2
+            font_size: (root.width**2 + root.height**2) / 14**4
+            text: "Description: "
+            color: 0, 0, 1, 1
+                
+
+        Button:
+            pos:0,0
+            size_hint: 0.12, 0.08
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Cancel"
+            on_release:
+                root.manager.transition.direction = "right"
+                root.Back()
+
+        Button:
+            id: join
+            pos_hint: {"right": 1, "top": 1}
+            size_hint: 0.2, 0.1
+            font_size: (root.width**2 + root.height**2) / 15**4
+            text: "Join Club +"
+            on_release:
+                root.JoinClub()
             
 <AddClub>:
     n: n
