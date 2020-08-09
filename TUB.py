@@ -313,8 +313,14 @@ class ClubInfo(Screen):
     def JoinClub(self):
         if self.join.text == "JOIN":
             db.joinClub(self.club_id)
+            self.join.text = "JOINED"
+            self.join.background_normal = ""
+            self.join.background_color = (0, 0, 1, 1)
         elif self.join.text == "APPLY":
             db.applyClub(self.club_id)
+            self.join.text = "APPLIED"
+            self.join.background_normal = ""
+            self.join.background_color = (1, 0, 0, 1)
     
 
 class AddClub(Screen):
