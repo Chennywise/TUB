@@ -64,7 +64,6 @@ class LoginWindow(Screen):
         self.email.text = ""
         self.password.text = ""
 
-
 class MainWindow(Screen):
     n = ObjectProperty(None)
     current = ""
