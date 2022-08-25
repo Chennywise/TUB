@@ -15,7 +15,6 @@ CREATE TABLE `club_list` (
 	PRIMARY KEY(`club_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-
 CREATE TABLE `club_members` (
 	`club_id` int(11) NOT NULL,
 	`member_id` int(11) NOT NULL AUTO_INCREMENT,
