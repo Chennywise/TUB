@@ -1,8 +1,6 @@
 import datetime
 import mysql.connector
 
-
-
 class DataBase:
     def __init__(self, filename):
 
