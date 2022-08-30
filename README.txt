@@ -4,6 +4,8 @@ Club management app
 
 Uses kivy and MySql connector
 
+This project was made with a group of 4 during a hackathon with each person performing an equal amount of work and the final finished version is uploaded to BCheng-KH.
+
 due to trouble with compilation of app,
 to run:
 download TUB.py, my.kv, and database.py
